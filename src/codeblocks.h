@@ -28,20 +28,20 @@ void draw_pcsl(unsigned char block, int x, int y, int scale, Color color) {
   Shape *cmd = blockshapes[block];
   Color bg = blockcolors[block];
   DrawRectangle(x,y,64,64,bg);
-  /*DrawText(blocknames[block], x+2, y+2, 5, color);
+  DrawText(blocknames[block], x+2, y+2, 5, color);
   for (int i=0; i<16; i++) {
     switch (cmd[i].command) {
-      case 1: DrawRectangle(cmd[i].x*scale, cmd[i].y*scale, cmd[i].x2*scale, cmd[i].y2*scale, color); break;
-      case 2: DrawRectangleLines(cmd[i].x*scale, cmd[i].y*scale, cmd[i].x2*scale, cmd[i].y2*scale, color); break;
-      case 3: DrawRectangle(cmd[i].x*scale, cmd[i].y*scale, cmd[i].x2*scale, cmd[i].y2*scale, bg); break;
-      case 4: DrawLineEx((Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){cmd[i].x2*scale,cmd[i].y2*scale}, 3, color); break;
-      case 5: DrawLineBezierQuad((Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){(cmd[i].x+(cmd[i].x2/2))*scale,(cmd[i].y-(cmd[i].y2/2))*scale}, 3, color); break;
-      case 6: DrawLineBezierQuad((Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){(cmd[i].x+(cmd[i].x2/2))*scale,(cmd[i].y+(cmd[i].y2/2))*scale}, 3, color); break;
-      case 7: DrawLineBezierQuad((Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){(cmd[i].x-(cmd[i].x2/2))*scale,(cmd[i].y+(cmd[i].y2/2))*scale}, 3, color); break;
-      case 8: DrawLineBezierQuad((Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){cmd[i].x*scale,cmd[i].y*scale}, (Vector2){(cmd[i].x+(cmd[i].x2/2))*scale,(cmd[i].y+(cmd[i].y2/2))*scale}, 3, color); break;
+      case 1: DrawRectangle(cmd[i].x*scale+x, cmd[i].y*scale+y, cmd[i].x2*scale, cmd[i].y2*scale, color); break;
+      case 2: DrawRectangleLines(cmd[i].x*scale+x, cmd[i].y*scale+y, cmd[i].x2*scale, cmd[i].y2*scale, color); break;
+      case 3: DrawRectangle(cmd[i].x*scale+x, cmd[i].y*scale+y, cmd[i].x2*scale, cmd[i].y2*scale, bg); break;
+      case 4: DrawLineEx((Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){cmd[i].x2*scale,cmd[i].y2*scale}, 3, color); break;
+      case 5: DrawLineBezierQuad((Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){(cmd[i].x+(cmd[i].x2/2))*scale,(cmd[i].y-(cmd[i].y2/2))*scale}, 3, color); break;
+      case 6: DrawLineBezierQuad((Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){(cmd[i].x+(cmd[i].x2/2))*scale,(cmd[i].y+(cmd[i].y2/2))*scale}, 3, color); break;
+      case 7: DrawLineBezierQuad((Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){(cmd[i].x-(cmd[i].x2/2))*scale,(cmd[i].y+(cmd[i].y2/2))*scale}, 3, color); break;
+      case 8: DrawLineBezierQuad((Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){cmd[i].x*scale+x,cmd[i].y*scale+y}, (Vector2){(cmd[i].x+(cmd[i].x2/2))*scale,(cmd[i].y+(cmd[i].y2/2))*scale}, 3, color); break;
       case 9: DrawCircle(cmd[i].x+8*scale, cmd[i].y+8*scale, ((cmd[i].x2+cmd[i].y2)/2)*scale, color); break;
       case 10: DrawCircleLines(cmd[i].x+8*scale, cmd[i].y+8*scale, ((cmd[i].x2+cmd[i].y2)/2)*scale, color); break;
       case 11: DrawCircle(cmd[i].x+8*scale, cmd[i].y+8*scale, ((cmd[i].x2+cmd[i].y2)/2)*scale, bg); break;
     }
-  }*/
+  }
 }
