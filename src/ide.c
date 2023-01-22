@@ -4,10 +4,10 @@
 
 #define DIR_LEFT 0
 #define DIR_RIGHT 1
+#define NUM_ROWS 9
 
-unsigned char code[16384][9];
-int row_lengths[9];
-int num_rows, cx, cy, scroll, t, kht, sb, temp1, temp2, temp3, temp4;
+unsigned char code[NUM_ROWS][16384] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+int num_rows = 2, cx, cy, scroll, t, kht, sb, temp1, temp2, temp3, temp4;
 KeyboardKey kh;
 bool dark = true;
 int sit=0;
@@ -40,10 +40,15 @@ void key(KeyboardKey k) {
   case KEY_LEFT: cx--; break;
   case KEY_RIGHT: cx++; break;
   case KEY_Z:;
-    if (!(cy<num_rows)) {
-      num_rows=cy;
+    while (num_rows<cy+1) {
+      num_rows++;
     }
-    code[cx+scroll/64][cy] = sb;
+    code[cy][cx+scroll/64] = sb;
+    break;
+  case KEY_X:
+    if (cy<num_rows) {
+      code[cy][cx+scroll/64] = 0;
+    }
     break;
   case KEY_O: sb--; break;
   case KEY_P: sb++; break;
@@ -51,7 +56,6 @@ void key(KeyboardKey k) {
 }
 
 void update() {
-  printf("\n");
   key(GetKeyPressed());
   t++;
   if ((kht>30) & !(kht%4)) {
@@ -80,21 +84,16 @@ void draw() {
 	DrawRectangle(0, 621, 1280, 92, (Color){24,24,32,255});
 	DrawRectangle(0, 631, 1280, 92, (Color){36,36,48,255});
   DrawText(TextFormat("Pictrel Code IDE v0.1.1\t\tX:%d    Y:%d    T:%d    B:%d",cx+(scroll/64),cy,t,sb),15,14,20,WHITE);
-  //DrawText("Press R to run code",GetRenderWidth()-228,14,20,WHITE);
-  unsigned char codeblock;
   for (int y=0; y<num_rows; y++) {
     for (int x=0; x<(GetRenderWidth()/64); x++) {
-      draw_pcsl(code[x][y], x*64, y*64+45, 4, BLACK);
+      draw_pcsl(code[y][x+scroll/64], x*64, y*64+45, 4, BLACK);
     }
   }
-  draw_pcsl(sb, cx*64, cy*64+45, 64/16, dark?WHITE:BLACK);
+  draw_pcsl(sb, cx*64, cy*64+45, 64/16, (blockcolors[sb].r+blockcolors[sb].g+blockcolors[sb].b<255)?WHITE:BLACK);
   DrawRectangle(cx*64, cy*64+45, 64, 64, (Color){255,255,255,30+t%60});
 }
 
 int main() {
-  for (int i=0; i<10; i++) {
-    code[16383][i] = 255;
-  };
 	InitWindow(1280,720,"Pictrel Code IDE");
 	SetTargetFPS(60);
 

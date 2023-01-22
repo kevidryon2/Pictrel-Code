@@ -1,22 +1,20 @@
 #include "raylib.h"
+#include <stdio.h>
+#include "advmath.h"
+#include "font.h"
 
-void update() {
-	//Add your code here!
+FILE *fp;
+
+
+void nextInst() {
+
 }
 
-void draw() {
-	ClearBackground(BLACK);
-	//Add your code here!
-}
-
-int main() {
-	InitWindow(256,256,"Pictrel Code");
-	SetTargetFPS(60);
-
-	while (!WindowShouldClose()) {
-		update();
-		BeginDrawing();
-		draw();
-		EndDrawing();
-	}
+int main(int argc, char **argv) {
+  InitWindow(512,512,"Pictrel Code");
+  while (WindowShouldClose()) {
+    BeginDrawing();
+    nextInst();
+    EndDrawing();
+  }
 }
