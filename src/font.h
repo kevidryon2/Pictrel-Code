@@ -2,7 +2,7 @@
 
 #pragma once
 
-char cfont[128][8] = {
+char cfont[256][8] = {
     {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},   // U+0000 (nul)
     {0xef, 0xc1, 0x1c, 0xd9, 0x83, 0x3b, 0xf0, 0x06},   // U+0001 (cobblestone)
     {0xff, 0xdd, 0xff, 0xf7, 0xbd, 0xff, 0xef, 0xff},   // U+0002 (pushable)
@@ -144,7 +144,7 @@ float scalefactor;
 
 void pixel(int x, int y, Color color) {
   scalefactor = 2.0f;
-  scalefactor += (GetScreenWidth()/640);
+  scalefactor += (GetScreenWidth()/512);
   DrawRectangle(x*scalefactor, y*scalefactor, scalefactor, scalefactor, color);
 }
 
@@ -186,8 +186,3 @@ void cputsbig(char *s, int x, int y, Color fgcol, Color bgcol) {
     x+=2;
   }
 }
-
-int dv1 = 127;
-int dv2 = 0;
-int dv3 = 0;
-int dv4 = 0;

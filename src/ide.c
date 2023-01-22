@@ -83,7 +83,7 @@ void draw() {
 	DrawRectangle(0, 0, 1280, 35, (Color){36,36,48,255});
 	DrawRectangle(0, 621, 1280, 92, (Color){24,24,32,255});
 	DrawRectangle(0, 631, 1280, 92, (Color){36,36,48,255});
-  DrawText(TextFormat("Pictrel Code IDE v0.1.1\t\tX:%d    Y:%d    T:%d    B:%d",cx+(scroll/64),cy,t,sb),15,14,20,WHITE);
+  DrawText(TextFormat("Pictrel Code IDE v0.2.1\t\tX:%d    Y:%d    T:%d    B:%d",cx+(scroll/64),cy,t,sb),15,14,20,WHITE);
   for (int y=0; y<num_rows; y++) {
     for (int x=0; x<(GetRenderWidth()/64); x++) {
       draw_pcsl(code[y][x+scroll/64], x*64, y*64+45, 4, BLACK);
