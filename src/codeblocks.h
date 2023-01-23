@@ -8,72 +8,57 @@ int a;
 bool c;
 int labeled_loc;
 
-//Instructions that require a source parameter (S != 11)
-void nop(int s, int d);
-void add(int s, int d);
-void subtract(int s, int d);
-void multiply(int s, int d);
-void divide(int s, int d);
-void modulo(int s, int d);
-void logor(int s, int d);
-void logand(int s, int d);
-void set(int s, int d);
-void equal(int s, int d);
-void less(int s, int d);
-void jump(int s, int d);
-void call(int s, int d);
-void drawch(int s, int d);
-void push(int s, int d);
-void calcsin(int s, int d);
+void nop(char cmd);
+void add(char cmd);
+void sub(char cmd);
+void mul(char cmd);
+void divi(char cmd);
+void mod(char cmd);
+void or(char cmd);
+void and(char cmd);
+void xor(char cmd);
+void inc(char cmd);
+void dec(char cmd);
+void cp(char cmd);
+void cpo(char cmd);
+void cpf(char cmd);
+void equ(char cmd);
+void lt(char cmd);
+void mt(char cmd);
+void jp(char cmd);
+void jr(char cmd);
+void call(char cmd);
+void ret(char cmd);
+void push(char cmd);
+void pop(char cmd);
+void cmputc(char cmd);
+void cmsin(char cmd);
+void cmsqrt(char cmd);
+void rep(char cmd);
+void cmemcpy(char cmd);
+void romcpy(char cmd);
+void memz(char cmd);
+void end(char cmd);
 
-//Instructions that require only a dest parameter or nothing (S == 11)
+void illinst();
 
-void pop(int s, int d);
-void keypressed(int s, int d);
-void keydown(int s, int d);
-void mousex(int s, int d);
-void mousey(int s, int d);
-void mouseleftdown(int s, int d);
-void mouserightdown(int s, int d);
-void mousewheel(int s, int d);
-void updatescreen(int s, int d);
-void copymem(int s, int d);
-void zeromem(int s, int d);
-void stdior(int s, int d);
-void zeroc(int s, int d);
-void invertc(int s, int d);
-void random(int s, int d);
-void end(int s, int d);
-
-Color blockcolors[16] = {
+Color blockcolors[64] = {
   BLANK, RED, YELLOW, GREEN
 };
 
-char blocknames[16][8] = {
+char blocknames[64][8] = {
   "", "TEST"
 };
 
-unsigned char blockfn[256] = {
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-  0x00, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1a, 0x1b, 0x1d, 0x1e, 0x00, 0x1f,
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-  0x00, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x00, 0x19, 0x1b, 0x1c, 0x1e, 0x00, 0x1f,
-
-};
-
-void (*instfn[32])() = {
+void (*instfn[64])() = {
   nop, add, subtract, multiply, divide, modulo, logor, logand, set, equal, less, jump, call, drawch, push, calcsin,
-  pop, keypressed, keydown, mousex, mousey, mouseleftdown, mouserightdown, mousewheel, updatescreen, copymem, zeromem, stdior, zeroc, invertc, random, end
+  pop, keypressed, keydown, mousex, mousey, mouseleftdown, mouserightdown, mousewheel, updatescreen, copymem, zeromem, stdior, zeroc, invertc, ran, end
 };
 
 Color calccol(int inst) {
-  int r = (inst%2)*127;
-  int g = (inst%4)*96;
-  int b = (inst%8)*112;
+  int r = (inst%2)*63;
+  int g = (inst%4)*48;
+  int b = (inst%8)*56;
   return (Color){r,g,b,inst?255:0};
 }
 
@@ -87,16 +72,15 @@ typedef struct {
   unsigned unused : 4;
 } Shape;
 
-Shape blockshapes[16][8] = {
+Shape blockshapes[64][8] = {
     {},
     {{1,2,2,5,5}}
 };
 
 void draw_pcsl(unsigned char block, int x, int y, int scale, Color color) {
-  int inst = block%16; block <<= 4;
-  int srcmode = block%4; block <<= 2;
-  int destmode = block%2; block <<= 1;
   int c = block%2; block <<= 1;
+  int indirect = block%2; block <<= 1;
+  int inst = block%64; block <<= 6;
   Shape *cmd = blockshapes[inst];
   Color bg = calccol(inst);
   DrawRectangle(x,y,64,64,bg);

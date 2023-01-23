@@ -1,0 +1,34 @@
+add <src> <dest>: add <src> to <dest>
+sub <src> <dest>: subtract <src> from <dest>
+mul <src> <dest>: multiply <dest> by <src>
+div <src> <dest>: divide <dest> by <src>
+mod <src> <dest>: modulo <dest> by <src>
+or <src> <dest>: bitwise or <dest> with <src>
+and <src> <dest>: bitwise and <dest> with <src>
+xor <src> <dest>: bitwise xor <dest> with <src>
+inc <dest>: increment <dest>
+dec <dest>: decrement <dest>
+cp <src> <dest>: Copy data from <src> to <dest>
+cpo <src> <dest>: Copy data from <src> to <dest> in the cloud
+cpf <src> <dest>: Copy 8 bytes from <src> to <dest> in font data
+equ <s1> <s2>: Set C to (<s1> == <s2>)
+lt <s1> <s2>: Set C to (<s1> < <s2>)
+mt <s1> <s2>: Set C to (<s1> > <s2>)
+jp <wsrc>: Jump to <src>
+jr <src>: Jump relatively to <src>
+call <src>: Call <src>
+ret: Return
+push <src>: Push <src>
+pop <dest>: Pop to <dest>
+putc <s1> <s2> <s3> <s4>: Draw character <s1> to screen at <s2>, <s3> colored <s4>
+sin <src> <dest>: Set <dest> to sin((<src>/255)*(π/2))*255 (in radians)
+sqrt <src> <dest>: Set <dest> to the square root of (<src>)
+uscr: Update screen
+line <s1> <s2> <s3> <s4> <s5>: Draw line from <s1>,<s2> to <s3>,<s4> colored <s5>
+circ <s1> <s2> <s3> <s4>: Draw circle at <s1>,<s2> with radius <s3> colored <s4>
+rect <s1> <s2> <s3> <s4> <s5>: Draw rectangle at <s1>,<s2> wide <s3> tall <s4> colored <s5>
+rep <s1> <inst> ...: Repeat following instruction <s1> times
+memcpy <s1> <dest> <s2>: Copy <s2> bytes of data from <s1> to <wdest> (RAM to RAM)
+romcpy <ws1> <wdest> <ws2>: Copy <ws2> bytes of data from <ws1> to <wdest> (ROM to RAM)
+memz <s1> <s2>: Set <s2> bytes of memory starting from <s1> to zero.
+end: End the program.
