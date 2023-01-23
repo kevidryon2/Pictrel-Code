@@ -20,7 +20,7 @@ call <src>: Call <src>
 ret: Return
 push <src>: Push <src>
 pop <dest>: Pop to <dest>
-putc <s1> <s2> <s3> <s4>: Draw character <s1> to screen at <s2>, <s3> colored <s4>
+putc <s1> <s2> <s3> <s4> <s5>: Draw character <s1> to screen at <s2>, <s3> colored <s4> on <s5>
 sin <src> <dest>: Set <dest> to sin((<src>/255)*(π/2))*255 (in radians)
 sqrt <src> <dest>: Set <dest> to the square root of (<src>)
 uscr: Update screen

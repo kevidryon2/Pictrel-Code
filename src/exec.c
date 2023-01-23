@@ -4,29 +4,6 @@
 #include "codeblocks.h"
 #include <string.h>
 
-FILE *fp;
-bool nextFrame;
-
-typedef struct {
-  unsigned o : 6;
-  unsigned i : 1;
-  unsigned c : 1;
-} Cmd;
-
-void nextInst() {
-  Cmd cmd;
-  char *cmdc;
-  fread(&cmd, 1, 1, fp);
-  memcpy(cmdc,&cmd,1);
-  if (cmd.c) {
-    if (c) {
-      instfn[*cmdc%64](*cmdc); //pointers >:DDD
-    }
-  } else {
-    instfn[blockfn[*cmdc%64]](*cmdc); //pointers >:DDD
-  }
-}
-
 int main(int argc, char **argv) {
   if (argc<2) {
     printf("Usage: pictrel-code <file>\n");

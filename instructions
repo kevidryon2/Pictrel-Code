@@ -4,6 +4,7 @@ sub
 mul
 div
 mod
+pwr
 or
 and
 xor
@@ -28,7 +29,6 @@ uscr
 line
 circ
 rect
-ill
 ill
 ill
 ill

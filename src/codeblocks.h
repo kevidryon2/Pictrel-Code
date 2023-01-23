@@ -14,6 +14,7 @@ void sub(char cmd);
 void mul(char cmd);
 void divi(char cmd);
 void mod(char cmd);
+void power(char cmd);
 void or(char cmd);
 void and(char cmd);
 void xor(char cmd);
@@ -34,13 +35,17 @@ void pop(char cmd);
 void cmputc(char cmd);
 void cmsin(char cmd);
 void cmsqrt(char cmd);
+void uscr(char cmd);
+void line(char cmd);
+void circ(char cmd);
+void rect(char cmd);
 void rep(char cmd);
 void cmemcpy(char cmd);
 void romcpy(char cmd);
 void memz(char cmd);
 void end(char cmd);
 
-void illinst();
+void ill(char cmd);
 
 Color blockcolors[64] = {
   BLANK, RED, YELLOW, GREEN
@@ -48,11 +53,6 @@ Color blockcolors[64] = {
 
 char blocknames[64][8] = {
   "", "TEST"
-};
-
-void (*instfn[64])() = {
-  nop, add, subtract, multiply, divide, modulo, logor, logand, set, equal, less, jump, call, drawch, push, calcsin,
-  pop, keypressed, keydown, mousex, mousey, mouseleftdown, mouserightdown, mousewheel, updatescreen, copymem, zeromem, stdior, zeroc, invertc, ran, end
 };
 
 Color calccol(int inst) {
