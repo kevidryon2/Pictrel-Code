@@ -1,0 +1,4 @@
+cp const 0x48 stdout
+2c 00 48 00
+2c 00 65 00
+2c 00 

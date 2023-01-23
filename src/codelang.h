@@ -1,14 +1,18 @@
+#include "raylib.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-
-/*
- * CDSSOOOO
- * S = 00: Constant
- * S = 01: Memory
- * S = 10: Memory Indirect
- * S = 11: Other Instruction
- * D = 0: Memory
- * D = 1: Memory Indirect
- * 
- */
+//OOOOOOIC SSSSSSSS DDDDDDDD
+//I = 0:
+//S = 0: SSSSSSSS VVVVVVVV (Constant)
+//S > 0: RRRRRRRR (Register)
+//D = 0: STDOUT
+//D > 0: RRRRRRRR (Register)
+//
+//I = 1:
+//S = 0: STDIN
+//S > 0: IIIIIIII (Indirect)
+//D = 0: STDERR
+//D > 0: IIIIIIII (Indirect)
+//
 char memory[255];
-char registers[255];

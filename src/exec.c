@@ -8,9 +8,8 @@ FILE *fp;
 bool nextFrame;
 
 typedef struct {
-  unsigned inst : 4;
-  unsigned src : 2;
-  unsigned dest : 1;
+  unsigned o : 6;
+  unsigned i : 1;
   unsigned c : 1;
 } Cmd;
 
@@ -21,10 +20,10 @@ void nextInst() {
   memcpy(cmdc,&cmd,1);
   if (cmd.c) {
     if (c) {
-      instfn[blockfn[*cmdc]](cmd.src, cmd.dest); //pointers >:DDD
+      instfn[*cmdc%64](*cmdc); //pointers >:DDD
     }
   } else {
-    instfn[blockfn[*cmdc]](cmd.src, cmd.dest); //pointers >:DDD
+    instfn[blockfn[*cmdc%64]](*cmdc); //pointers >:DDD
   }
 }
 
