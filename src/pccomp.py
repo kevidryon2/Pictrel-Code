@@ -17,6 +17,12 @@ except (FileNotFoundError):
 
 data = ifp.read()
 
+mnemsd = open("instructions_comp", "r").readlines()
+mnems={}
+
+for line in mnemsd:
+    tokens = line.split()
+    mnems[tokens[1]] = int(tokens[0], 16)
 defines = {}
 
 labels = {}
@@ -62,35 +68,46 @@ while (i<len(lines)):
             else:
                 print("Syntax error at line",i+1,"(\""+tokens[0]+"\" isn't a valid prefix):\n\t"+line)
         elif (section=="code"):
-            for byte in tokens:
-                if (byte.startswith("$")):
-                    try:
-                        if (type(defines[byte[1:]]) == str):
-                            ofp.write(bytes(str.encode(defines[byte[1:]],encoding="ascii")))
-                        else:
-                            ofp.write(bytes([defines[byte[1:]]]))
-                    except (KeyError):
-                        print("Undefined constant at line",i+1,"\b:\n\t"+line)
-                        sys.exit(127)
-                elif (byte.startswith("%")):
-                    n = labels[byte[1:]]
-                    w = False
-                    if (rel):
-                        n = (n - i) + 127
-                        ofp.write(bytes([n%256]))
+            mnem = tokens[0];
+            if (tokens[0] == "label"):
+                labels[tokens[1]] = i
+            elif (tokens[0].startswith("$")):
+                try:
+                    if (type(defines[tokens[0][1:]]) == str):
+                        ofp.write(bytes(str.encode(defines[tokens[0][1:]],encoding="ascii")))
                     else:
-                        ofp.write(bytes([n/256,n%256]))
-                elif (byte == "label"):
-                    labels[tokens[1]] = i
-                    break
-                elif (byte == "rel"):
-                    rel=True
-                else:
-                    ofp.write(bytes([int(byte,16)]))
+                        ofp.write(bytes([defines[tokens[0][1:]]]))
+                except (KeyError):
+                    print("Undefined constant at line",i+1,"\b:\n\t"+line)
+                    sys.exit(127)
+            else:
+                ofp.write(bytes([mnems[mnem]]))
+                for byte in tokens[1:]:
+                    if (byte.startswith("$")):
+                        try:
+                            if (type(defines[byte[1:]]) == str):
+                                ofp.write(bytes(str.encode(defines[byte[1:]],encoding="ascii")))
+                            else:
+                                ofp.write(bytes([defines[byte[1:]]]))
+                        except (KeyError):
+                            print("Undefined constant at line",i+1,"\b:\n\t"+line)
+                            sys.exit(127)
+                    elif (byte.startswith("%")):
+                        n = labels[byte[1:]]
+                        w = False
+                        if (rel):
+                            n = (n - i) + 127
+                            ofp.write(bytes([n%256]))
+                        else:
+                            ofp.write(bytes([n/256,n%256]))
+                    elif (byte == "rel"):
+                        rel=True
+                    else:
+                        ofp.write(bytes([int(byte,16)]))
         if (not section in valid_sections):
             print("Invalid section error at line",i+1,"\b:\n\t"+data.split("\n")[i])
 
-    except (IndexError,ValueError):
+    except (IndexError):
         if (len(tokens)<1):
             pass
         else:

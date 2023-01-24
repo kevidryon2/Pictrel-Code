@@ -24,7 +24,8 @@ FILE *fp;
 bool nextFrame, stopped;
 unsigned char memory[255];
 bool c;
-short stack[256];
+int pc;
+short stacktt[256];
 unsigned char sp;
 
 char getsrcarg(char cmd) {
@@ -101,9 +102,9 @@ Color pal(char index) {
     unsigned r : 3;
     unsigned g : 3;
     unsigned b : 2;
-  } *rgbp;
-  memcpy(rgbp, &index, 1);
-  return (Color){rgbp->r*85,rgbp->g*85,rgbp->b*127,255};
+  } rgbp;
+  memcpy(&rgbp, &index, 1);
+  return (Color){rgbp.r*85,rgbp.g*85,rgbp.b*127,255};
 }
 
 void nop(char cmd) {};
@@ -257,11 +258,10 @@ void romcpy(char cmd) {
 }
 
 void memz(char cmd) {
-  int from = (unsigned)getsrcarg(cmd);
-  int to = (unsigned)getsrcarg(cmd);
+  int addr = (unsigned)getsrcarg(cmd);
   int count = (unsigned)getsrcarg(cmd);
   for (int i=0; i<count; i++) {
-    memory[to+i] = 0;
+    memory[addr+i] = 0;
   }
 }
 
@@ -300,7 +300,7 @@ void call(char cmd) {
   if (sp==255) {
     stackOverflow();
   }
-  stack[sp] = ftell(fp);
+  stacktt[sp] = ftell(fp);
   sp++;
   fseek(fp, getwsrcarg(cmd), SEEK_SET);
 }
@@ -310,14 +310,14 @@ void ret(char cmd) {
     stackUnderflow();
   }
   sp--;
-  fseek(fp, stack[sp], SEEK_SET);
+  fseek(fp, stacktt[sp], SEEK_SET);
 }
 
 void push(char cmd) {
   if (sp==255) {
     stackOverflow();
   }
-  stack[sp] = ftell(fp);
+  stacktt[sp] = ftell(fp);
   sp++;
 }
 
@@ -326,7 +326,7 @@ void pop(char cmd) {
     stackUnderflow();
   }
   sp--;
-  setdestarg(cmd, stack[sp]);
+  setdestarg(cmd, stacktt[sp]);
 }
 
 void cpo(char cmd) {
@@ -373,16 +373,21 @@ void (*instfn[64])(char) = {
 };
 
 typedef struct {
-  unsigned o : 6;
-  unsigned i : 1;
-  unsigned c : 1;
+  unsigned int o : 6;
+  unsigned int i : 1;
+  unsigned int c : 1;
 } Cmd;
+
+unsigned char data[16384];
 
 void nextInst() {
   Cmd cmd;
   char *cmdc;
-  fread(&cmd, 1, 1, fp);
-  memcpy(cmdc,&cmd,1);
+  printf("%d\n", sizeof(cmd));
+  printf("%02x", *cmdc);
+  memcpy(&cmdc,data+pc,1);
+  memcpy(&cmd,&cmdc,1);
+  printf("%02x\n", *cmdc);
   if (cmd.c) {
     if (c) {
       instfn[*cmdc%64](*cmdc); //pointers >:DDD

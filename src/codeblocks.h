@@ -56,9 +56,9 @@ char blocknames[64][8] = {
 };
 
 Color calccol(int inst) {
-  int r = (inst%2)*63;
-  int g = (inst%4)*48;
-  int b = (inst%8)*56;
+  int r = (inst%2)*255;
+  int g = (inst%4)*127;
+  int b = (inst%8)*225;
   return (Color){r,g,b,inst?255:0};
 }
 

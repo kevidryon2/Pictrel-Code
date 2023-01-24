@@ -22,7 +22,7 @@ call
 ret
 push
 pop
-putc
+pch
 sin
 sqrt
 uscr
