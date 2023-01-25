@@ -24,19 +24,21 @@ FILE *fp;
 bool nextFrame, stopped;
 unsigned char memory[255];
 bool c;
-int pc;
+int pc = 0;
 short stacktt[256];
 unsigned char sp;
 
 char getsrcarg(char cmd) {
   char s;
   s = fgetc(fp);
+  pc++;
   switch ((cmd%4)>>1) { //switch (I)
     case 0:
       if (s) {
         s = memory[s-1];
       } else {
         s = fgetc(fp);
+        pc++;
       }
       break;
     case 1:
@@ -53,6 +55,7 @@ char getsrcarg(char cmd) {
 short getwsrcarg(char cmd) {
   short s;
   s = fgetc(fp);
+  pc++;
   switch ((cmd%4)>>1) { //switch (I)
     case 0:
       if (s) {
@@ -61,6 +64,7 @@ short getwsrcarg(char cmd) {
         char l = fgetc(fp);
         char h = fgetc(fp);
         s = l+h*256;
+        pc+=2;
       }
       break;
     case 1:
@@ -79,10 +83,12 @@ short getwsrcarg(char cmd) {
 void setdestarg(char cmd, char data) {
   char d;
   d = fgetc(fp);
+  pc++;
   switch ((cmd%4)>>1) { //switch (I)
     case 0:
       if (d) {
         memory[fgetc(fp)] = data;
+        pc++;
       } else {
         fputc(data, stdout);
       }
@@ -90,6 +96,7 @@ void setdestarg(char cmd, char data) {
     case 1:
       if (d) {
         memory[memory[fgetc(fp)]] = data;
+        pc++;
       } else {
         fputc(data, stderr); //TODO: Make this line of code set value of save file
       }
@@ -337,17 +344,22 @@ void setfdestarg(char cmd, char data) {
   char d;
   d = fgetc(fp);
   char *flatcfont = cfont; //pointers >:D
+  pc++;
   switch ((cmd%4)>>1) { //switch (I)
     case 0:
       if (d) {
-        flatcfont[fgetc(fp)+fgetc(fp)*256] = data;
+        char v = fgetc(fp);
+        flatcfont[v+fgetc(fp)*256] = data;
+        pc++;
       } else {
         ill(cmd);
       }
       break;
     case 1:
       if (d) {
-        flatcfont[memory[fgetc(fp)]+memory[fgetc(fp)]*256] = data;
+        char v = fgetc(fp);
+        flatcfont[memory[v]+memory[fgetc(fp)]*256] = data;
+        pc++;
       } else {
         ill(cmd);
       }
@@ -373,26 +385,25 @@ void (*instfn[64])(char) = {
 };
 
 typedef struct {
-  unsigned int o : 6;
-  unsigned int i : 1;
-  unsigned int c : 1;
+  int o : 6;
+  int i : 1;
+   int c : 1;
 } Cmd;
 
 unsigned char data[16384];
 
 void nextInst() {
   Cmd cmd;
-  char *cmdc;
-  printf("%d\n", sizeof(cmd));
-  printf("%02x", *cmdc);
-  memcpy(&cmdc,data+pc,1);
+  char cmdc;
+  cmdc = data[pc];
   memcpy(&cmd,&cmdc,1);
-  printf("%02x\n", *cmdc);
+  printf("%02x\n", sizeof(Cmd));
   if (cmd.c) {
     if (c) {
-      instfn[*cmdc%64](*cmdc); //pointers >:DDD
+      instfn[(cmdc/4)%64](cmdc); //pointers >:DDD
     }
   } else {
-    instfn[*cmdc%64](*cmdc); //pointers >:DDD
+    instfn[(cmdc/4)%64](cmdc); //pointers >:DDD
   }
+  pc++;
 }

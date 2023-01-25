@@ -19,6 +19,10 @@ int main(int argc, char **argv) {
 	printf("Reading file...\n");
 	int prglen = fread(data,1,16384,fp);
 	printf("Read %d bytes from program file.\n", prglen);
+	for (int i=0; i<prglen; i++) {
+		printf("%02x ", data[i]);
+	}
+	printf("\n");
 	BeginDrawing();
 	ClearBackground(BLACK);
 	EndDrawing();

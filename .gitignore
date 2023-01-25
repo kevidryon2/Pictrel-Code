@@ -1,3 +1,3 @@
-src/tags.*
-tags.*
-build/*
+client/src/tags.*
+client/tags.*
+client/build/*
