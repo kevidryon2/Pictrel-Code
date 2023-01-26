@@ -210,7 +210,8 @@ void cmsqrt(char cmd) {
 }
 
 void uscr(char cmd) {
-  nextFrame = true;
+  EndDrawing();
+  BeginDrawing();
 }
 
 void line(char cmd) {
@@ -385,25 +386,27 @@ void (*instfn[64])(char) = {
 };
 
 typedef struct {
-  int o : 6;
-  int i : 1;
-   int c : 1;
+  unsigned int o : 6;
+  unsigned int i : 1;
+  unsigned int c : 1;
 } Cmd;
 
 unsigned char data[16384];
 
 void nextInst() {
   Cmd cmd;
-  char cmdc;
+  unsigned char cmdc;
   cmdc = data[pc];
   memcpy(&cmd,&cmdc,1);
-  printf("%02x\n", sizeof(Cmd));
+  printf("%03d %02x ", pc, cmdc);
   if (cmd.c) {
     if (c) {
       instfn[(cmdc/4)%64](cmdc); //pointers >:DDD
     }
   } else {
+    printf("%d", (cmdc/4)%64);
     instfn[(cmdc/4)%64](cmdc); //pointers >:DDD
   }
+  printf("\n");
   pc++;
 }

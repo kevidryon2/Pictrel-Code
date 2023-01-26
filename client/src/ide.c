@@ -7,6 +7,7 @@
 #define NUM_ROWS 9
 
 unsigned char code[NUM_ROWS][16384] = {0,4,8,12,16,20,24,28};
+bool isDataBlock[NUM_ROWS][16384]; //TODO: Implement this next day
 int num_rows = 2, cx, cy, scroll, t, kht, sb, temp1, temp2, temp3, temp4;
 KeyboardKey kh;
 bool dark = true;
@@ -50,8 +51,8 @@ void key(KeyboardKey k) {
       code[cy][cx+scroll/64] = 0;
     }
     break;
-  case KEY_O: sb--; break;
-  case KEY_P: sb++; break;
+  case KEY_O: sb-=4; break;
+  case KEY_P: sb+=4; break;
   }
 }
 
@@ -83,7 +84,7 @@ void draw() {
 	DrawRectangle(0, 0, 1280, 35, (Color){36,36,48,255});
 	DrawRectangle(0, 621, 1280, 92, (Color){24,24,32,255});
 	DrawRectangle(0, 631, 1280, 92, (Color){36,36,48,255});
-	DrawText(TextFormat("Pictrel Code IDE v0.4.2 Bandicoot\t\tX:%d    Y:%d    T:%d    B:%d",cx+(scroll/64),cy,t,sb),15,14,20,WHITE);
+	DrawText(TextFormat("Pictrel Code IDE v0.4.3 Bandicoot\t\tX:%d    Y:%d    T:%d    B:%d",cx+(scroll/64),cy,t,sb),15,14,20,WHITE);
 	for (int y=0; y<num_rows; y++) {
     for (int x=0; x<(GetRenderWidth()/64); x++) {
       draw_pcsl(code[y][x+scroll/64], x*64, y*64+45, 4, BLACK);

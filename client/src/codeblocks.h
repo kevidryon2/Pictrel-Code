@@ -72,19 +72,14 @@ typedef struct {
   unsigned unused : 4;
 } Shape;
 
-Shape blockshapes[64][8] = {
-    {},
-    {{1,2,2,5,5}}
-};
-
 void draw_pcsl(unsigned char block, int x, int y, int scale, Color color) {
-  int c = block%2; block <<= 1;
-  int indirect = block%2; block <<= 1;
-  int inst = block%64; block <<= 6;
-  Shape *cmd = blockshapes[inst];
+  int c = block%2;
+  int indirect = (block%4)/2;
+  int inst = block/4;
   Color bg = calccol(inst);
   DrawRectangle(x,y,64,64,bg);
-  DrawText(blocknames[inst], x+2, y+2, 5, color);
+  DrawText(blocknames[inst], x+10, y+2, 10, color);
+  /*Shape *cmd = blockshapes[inst];
   for (int i=0; i<8; i++) {
     switch (cmd[i].command) {
       case 1: DrawRectangle(cmd[i].x*scale+x, cmd[i].y*scale+y, cmd[i].x2*scale, cmd[i].y2*scale, color); break;
@@ -100,5 +95,5 @@ void draw_pcsl(unsigned char block, int x, int y, int scale, Color color) {
       case 11: DrawCircleLines(cmd[i].x+8*scale, cmd[i].y+8*scale, ((cmd[i].x2+cmd[i].y2)/2)*scale, color); break;
       case 12: DrawCircle(cmd[i].x+8*scale, cmd[i].y+8*scale, ((cmd[i].x2+cmd[i].y2)/2)*scale, bg); break;
     }
-  }
+  }*/
 }

@@ -26,9 +26,10 @@ int main(int argc, char **argv) {
 	BeginDrawing();
 	ClearBackground(BLACK);
 	EndDrawing();
+	while (!stopped) nextInst();
 	while (!WindowShouldClose()) {
 		BeginDrawing();
-		while (!nextFrame) nextInst();
+		DrawText("Program ended.",0,0,20,RED);
 		EndDrawing();
 	}
 }

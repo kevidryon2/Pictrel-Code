@@ -1,16 +1,17 @@
 .data:
 	db MessageLen 13
 	ds Message Hello, World!
+	db CONST 0
 
 .code:
-cp 00 3f 40
-cp 00 00 41
+cp CONST 3f 40
+cp CONST 00 41
 
 label loop
 cp 74 40
-sub 00 3f 74
-pch 40 74 00 00 00 ff
-lt 74 00 $MessageLen
+sub CONST 3f 74
+pch 40 74 CONST 00 CONST ff
+lt 74 CONST $MessageLen
 jrc 00 rel %loop
 end
 
